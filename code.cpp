@@ -1,142 +1,53 @@
-#include <iostream> 
+#include <iostream>
 #include <vector>
 using namespace std;
 
-    // Memory Address
+int binarySearch(vector<int> arr, int tar) {  // iterative 
+    int st = 0, end =arr.size()-1;
 
-// int main() {
-//    float price = 100.23;
-//    float* ptr = &price;
+    while(st <= end) {
+        // int mid = (st + end) /2;
+        int mid = st + (end - st)/2;
+         
+        if(tar > arr[mid]) {
+            st = mid + 1;
+        } else if (tar < arr[mid]) {
+            end = mid -1;
+        } else {
+            return mid;
+        }
+    }
 
-//    cout << ptr << endl;
+    return -1;
+}
 
-//     cout << &price << endl;
+int recBinarySearch(vector<int> arr, int tar, int st, int end) {
+    if(st < end) {
+        int mid = st + (end - st)/2;
 
-//     return 0;
-// }
+        if(tar > arr[mid]) { // 2nd half
+            return recBinarySearch(arr, tar,mid+1, end);
+        } else if (tar < arr[mid]) {  // 1st  half
+            return recBinarySearch(arr, tar, st, mid-1);
+        } else { // mid => ans
+            return mid;
+        }
 
-
-    //     Pointer To pointer
-
-// int main() {
-//     // int a = 10;
-//     // int* ptr = &a;
-
-//     // int** parPtr = &ptr;
-
-//     // cout << &ptr << endl;
-//     // cout << parPtr << endl;
-
-//     // (*Derefrence operator*)
-//     // cout << *(&a) << endl;
-//     // cout << *(ptr) << endl;
-
-//     // (NULL pointer) 
-//     int** ptr = NULL;
-//     cout << ptr << endl;
-//     return 0;
-
-// }
-
-    // *(Predict output)*
-
-// int main() {
-//     int a = 5;
-//     int* p = &a;
-//     int** q = &p;
-
-//     cout << *p << endl;
-//     cout << **q << endl;
-//     cout << p << endl;
-//     cout << *q << endl;
-
-//     return 0;
-// }
-
-
- 
-// pass by Reference 
-
-// void changA(int* ptr) { // pass by reference using pointers
-//    *ptr = 20;
-    
-// }
-
-// void changA(int &b) { // pass by reference using alias
-//     b = 20;
-// }
-
-// int main() {
-//     int a = 10;
-//     changA (&a);
-//     changA (a);
-
-//     cout << "inside main fnx = " << a << endl; // 20
-
-
-//     return 0;
-// }
-
-
-            //  Pointer Arithmetic
-
-// int main() {
-//     int arr[] = {1, 2, 3, 4, 5};
-
-//     int a = 10;
-//     int* ptr = &a;
-
-//     cout << ptr << endl;
-//     //ptr--;
-//     ptr = ptr + 2; // 2int => 8B
-//     cout << ptr << endl; // hexadecimal => +4
-
-//     return 0; 
-// }
-
-
-                // Subtract pointer
-
-// int main() {
-//     int arr[] = {1, 2, 3, 4, 5} ;
-    
-//     int* ptr2; // 100
-//     int* ptr1 = ptr2 + 2; // 108
-
-//     cout << ptr1 - ptr2 << endl; // 2
-
-//     return 0;
-// }
-
-
-                //  compare pointer
-
-// int main() {
-//     int arr[] = {1, 2, 3, 4, 5};
-
-//     int* ptr1;
-//     int* ptr2;
-
-//     cout << ptr1 << endl;
-//     cout << ptr2 << endl;
-
-//     cout << (ptr1 < ptr2) << endl;
-
-//     return 0;
-// }
-
-
-
-                    // Predict output this Qs
+    }
+        return -1;
+        
+}
 
 int main() {
-    int arr[] = {10, 20, 30, 40};
-    int* ptr = arr;
+    vector<int> arr1 = {-1, 0,  3, 4, 5, 9, 12}; // odd
+    int tar1 = 4;
 
-    cout << *(ptr + 1) << endl;
-    cout << *(ptr + 3) << endl;
-    ptr++;
-    cout << *ptr << endl;
+    //cout << binarySearch(arr1, tar1) << endl;
+
+    vector<int> arr2 = {-1, 0, 3, 5, 9, 12}; // even
+    int tar2 = 20;
+
+    cout << binarySearch(arr2, tar2) << endl;
 
     return 0;
 }
