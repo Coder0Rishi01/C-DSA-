@@ -2,38 +2,23 @@
 #include <vector>
 using namespace std;
 
+ int peakIndexInMountainArray(vector<int>& A) {
+            int st = 1, end = A.size() - 2;
 
-    int search(vector<int>& A, int tar) {
-        int st = 0, end = A.size()-1;
-
-        while(st <= end) {
-            int mid = st + (end-st)/2;
-
-            if(A[mid] == tar) {
-                return mid;
-            }
-            
-            if(A[st] <= A[mid]) { // Left  sorted
-                if(A[st] <= tar && tar <= A[mid]) {
-                    end = mid-1;
-                } else {
-                    st = mid + 1;
-                }
-            } else { // right sorted
-                if(A[mid] <= tar && tar <= A[end]) {
+            while(st <= end) {
+                int mid = st + (end - st) / 2;
+                if(A[mid - 1] < A[mid] && A[mid] > A[mid + 1]) {
+                    return mid;
+                } else if (A[mid - 1] < A[mid]) {
                     st = mid + 1;
                 } else {
                     end = mid - 1;
                 }
             }
-        }
-        return -1;
+            return -1;
     }
 
-int main() {
-    int arr = {3, 4, 5, 6, 7, 0, 1, 2} ;
-    int tar = 0;
-
-    cout << search
-    return 0;
+int main()  {
+    
+    return  0;
 }
