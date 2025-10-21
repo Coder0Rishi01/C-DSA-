@@ -1,55 +1,51 @@
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
-                                // Painter's Partition Problem
-                                
-                                
+                                    // Aggressive Cows Problem 
 
-bool isPossible(vector<int> &arr, int n, int m, int maxAllowedTime){ // O(n)
-    int painter = 1, time = 0;
 
-    for(int i=0; i<n; i++) {
-        if(time + arr[i] <= maxAllowedTime) {
-            time += arr[i];
+bool isPossible(vector<int> &arr, int N, int C, int minAllowedDist) { // O(N)
+    int cows =  1, lastStallPos = arr[0];
 
-        } else {
-            painter++;
-            time = arr[i];
+    for(int i = 1; i<N; i++) {
+        if(arr[i] - lastStallPos >= minAllowedDist) {
+            cows++;
+            lastStallPos = arr[i];
+        }
+        if(cows == C) {
+            return true;
         }
     }
-    return painter <= m;
+    return false;
 }
 
 
-int minTimeToPaint(vector<int> &arr, int n, int m) {  // O(log(sum) * n)
-    int sum = 0, maxVal = __WINT_MIN__;
+int getDistance(vector<int> &arr, int N, int C) {
+       sort(arr.begin(), arr.end()); // NlogN
+        // st = 1, end = maxVal - minVal;
 
-    for(int i=0; i<n; i++) { // O(n)
-        sum += arr[i];
-        maxVal = max(maxVal, arr[i]);
-    }
+        int st = 1, end = arr[N-1] - arr[0], ans = -1;
 
-    int st = maxVal, end = sum, ans = -1;
+        while(st <= end) { // O(lon(Range) * N)
+            int mid = st + (end - st) /2;
 
-    while(st <= end){ 
-        int mid = st + (end - st) /2;
-        if(isPossible(arr, n, m, mid)) { // left
-            ans = mid;
-            end = mid-1;
-        } else {// right 
-            st = mid + 1;
+            if(isPossible (arr, N, C, mid)) { // right
+                ans = mid;
+                st = mid+1;
+            } else { // Left
+                end = mid - 1;
+            }
         }
-    }
-    return ans;
-}                                
-
+        return ans;
+}
 
 int main() {
-     vector<int> arr = {40, 30, 10, 20};
-     int n = 4, m = 2;
+    int N = 5, C = 3;
+    vector<int> arr = {1, 2, 8, 4, 9};
 
-     cout << minTimeToPaint(arr, n, m) << endl;
+    cout << getDistance(arr, N, C) << endl;
 
     return 0;
 }
