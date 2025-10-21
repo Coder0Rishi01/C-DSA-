@@ -1,60 +1,55 @@
 #include <iostream>
-#include <vector> 
+#include <vector>
 using namespace std;
 
-                    // Book Allocation or Allocate books Problem
+                                // Painter's Partition Problem
+                                
+                                
 
-bool isValid(vector<int> &arr, int n, int m, int maxAllowedpages) {
-    int student = 1, pages = 0;
+bool isPossible(vector<int> &arr, int n, int m, int maxAllowedTime){ // O(n)
+    int painter = 1, time = 0;
 
     for(int i=0; i<n; i++) {
-        if(arr[i] > maxAllowedpages) {
-            return false;
-        }
+        if(time + arr[i] <= maxAllowedTime) {
+            time += arr[i];
 
-        if(pages + arr[i] <= maxAllowedpages) {
-            pages += arr[i];
         } else {
-            student++;
-            pages = arr[i];
+            painter++;
+            time = arr[i];
         }
     }
-
-    return student > m ? false : true;
+    return painter <= m;
 }
 
-int allocateBooks(vector<int> &arr, int n, int m) { // O(longN * n)
-    if(m > n) {
-        return -1;
-    }
 
-    int sum = 0;
+int minTimeToPaint(vector<int> &arr, int n, int m) {  // O(log(sum) * n)
+    int sum = 0, maxVal = __WINT_MIN__;
+
     for(int i=0; i<n; i++) { // O(n)
         sum += arr[i];
+        maxVal = max(maxVal, arr[i]);
     }
 
-    int ans = -1;
-    int st = 0, end = sum; // range of possible ans
+    int st = maxVal, end = sum, ans = -1;
 
-     while(st <= end) { // O(logN * n)
+    while(st <= end){ 
         int mid = st + (end - st) /2;
-
-        if(isValid(arr,n,m, mid)) { // left
+        if(isPossible(arr, n, m, mid)) { // left
             ans = mid;
-            end =  mid - 1;
-        } else { // right 
+            end = mid-1;
+        } else {// right 
             st = mid + 1;
         }
-     }
-     return ans;
-}
-                    
-int main() {
-    // vector<int> arr =  {2, 1, 3, 4}; // 6
-    vector<int> arr = {15, 17, 20}; // 32
-    int n = 4, m = 2;
+    }
+    return ans;
+}                                
 
-    cout << allocateBooks(arr, n, m) << endl;
+
+int main() {
+     vector<int> arr = {40, 30, 10, 20};
+     int n = 4, m = 2;
+
+     cout << minTimeToPaint(arr, n, m) << endl;
 
     return 0;
 }
